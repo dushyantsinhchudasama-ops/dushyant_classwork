@@ -35,4 +35,9 @@ public class Box {
     public void setDepth(double depth) {
         this.depth = depth;
     }
+
+    public void show()
+    {
+        System.out.println("From Box Show");
+    }
 }

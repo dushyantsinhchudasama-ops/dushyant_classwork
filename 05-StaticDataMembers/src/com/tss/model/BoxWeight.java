@@ -25,4 +25,10 @@ public class BoxWeight extends Box {
                 "weight=" + weight +
                 '}';
     }
+
+    public void show()
+    {
+        System.out.println("From BoxWeight show");
+    }
+
 }
