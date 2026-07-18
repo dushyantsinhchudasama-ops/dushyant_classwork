@@ -4,6 +4,7 @@ import com.tss.db.database.Database;
 import com.tss.db.model.Student;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,8 +16,7 @@ public class StudentRepository {
         connection = Database.getConnection();
     }
 
-    public void getAllStudents()
-    {
+    public void getAllStudents() throws SQLException {
 
         List<Student> students = Database.readAllStudent();
 
@@ -34,7 +34,7 @@ public class StudentRepository {
     }
 
     //for updating student
-    public void updateStudent(Scanner scanner) {
+    public void updateStudent(Scanner scanner) throws SQLException {
 
         System.out.print("Enter Student ID: ");
         int id = scanner.nextInt();
@@ -51,7 +51,7 @@ public class StudentRepository {
     }
 
     //for adding new student
-    public void addStudent(Scanner scanner) {
+    public void addStudent(Scanner scanner) throws SQLException {
 
         System.out.print("Enter Name: ");
         String name = scanner.next();
@@ -65,8 +65,7 @@ public class StudentRepository {
     }
 
     //for deleting student
-    public void deleteStudent(Scanner scanner)
-    {
+    public void deleteStudent(Scanner scanner) throws SQLException {
         System.out.print("Enter Student ID: ");
         int id = scanner.nextInt();
 

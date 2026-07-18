@@ -1,19 +1,17 @@
 package com.tss.db.menu;
 
 import com.tss.db.database.Database;
-import com.tss.db.model.Student;
+import com.tss.db.repository.EnrollmentRepository;
 import com.tss.db.repository.StudentRepository;
 
-import javax.xml.crypto.Data;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Scanner;
 
-public class Menu {
+public class EnrollmentMenu {
 
     Scanner scanner = new Scanner(System.in);
 
-    StudentRepository studentRepository = new StudentRepository();
+    EnrollmentRepository enrollmentRepository = new EnrollmentRepository();
 
     int choice;
 
@@ -21,11 +19,11 @@ public class Menu {
     {
         do {
 
-            System.out.println("\n===== STUDENT MANAGEMENT =====");
-            System.out.println("1. Add Student");
-            System.out.println("2. View All Students");
-            System.out.println("3. Update Student");
-            System.out.println("4. Delete Student");
+            System.out.println("\n===== ENROLLMENT MANAGEMENT =====");
+            System.out.println("1. Add Enrollment");
+            System.out.println("2. View All Enrollments");
+            System.out.println("3. Update Enrollment");
+            System.out.println("4. Delete Enrollment");
             System.out.println("5. Exit");
             System.out.print("Enter your choice: ");
 
@@ -35,7 +33,7 @@ public class Menu {
 
                 case 1:
                     try {
-                        studentRepository.addStudent(scanner);
+                        enrollmentRepository.addEnrollment(scanner);
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                     }
@@ -43,7 +41,7 @@ public class Menu {
 
                 case 2:
                     try {
-                        studentRepository.getAllStudents();
+                        enrollmentRepository.getAllEnrollments();
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                     }
@@ -52,7 +50,7 @@ public class Menu {
                 case 3:
 
                     try {
-                        studentRepository.updateStudent(scanner);
+                        enrollmentRepository.updateEnrollment(scanner);
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                     }
@@ -60,14 +58,16 @@ public class Menu {
 
                 case 4:
                     try {
-                        studentRepository.deleteStudent(scanner);
+                        enrollmentRepository.deleteEnrollment(scanner);
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
 
                 case 5:
-                    return;
+                    System.out.println("Thank You!");
+                    Database.closeConnection();
+                    break;
 
                 default:
                     System.out.println("Invalid Choice!");
