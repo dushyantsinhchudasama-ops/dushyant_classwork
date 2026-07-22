@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean class="com.tss.core.entity.HardDisk" name="harddisk">
+
+<!--        setter injection -->
+<!--        <property name="capacity" value="326" />-->
+
+<!--        Constructor injection-->
+        <constructor-arg name="capacity" value="512" />
+
+    </bean>
+
+    <bean class="com.tss.core.entity.Computer" name="computer" id="computer">
+
+<!--        Setter injection-->
+        <!--        <property name="company" value="Apple"/>-->
+<!--        <property name="hardDisk" ref="harddisk"/>-->
+
+<!--        Constructor injection -->
+        <constructor-arg index="1" ref="harddisk"/>
+        <constructor-arg index="0" value="512"/>
+    </bean>
+
+</beans>
