@@ -2,6 +2,8 @@ package com.tss.__jpa.controller;
 
 import com.tss.__jpa.dto.EmployeeRequestDto;
 import com.tss.__jpa.dto.EmployeeResponseDto;
+import com.tss.__jpa.dto.PageResponseDto;
+import com.tss.__jpa.dto.StudentResponseDto;
 import com.tss.__jpa.entity.Employee;
 import com.tss.__jpa.services.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +22,20 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
+    //this was without pagination
+
+//    @GetMapping("/employees")
+//    public ResponseEntity<List<EmployeeResponseDto>> getAll()
+//    {
+//        return new ResponseEntity<>(employeeService.readAll(), HttpStatus.OK);
+//    }
+
+    //this will be with pagination
+
     @GetMapping("/employees")
-    public ResponseEntity<List<EmployeeResponseDto>> getAll()
-    {
-        return new ResponseEntity<>(employeeService.readAll(), HttpStatus.OK);
+    public ResponseEntity<PageResponseDto<EmployeeResponseDto>> getAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "1") int size) {
+
+        return ResponseEntity.ok(employeeService.readAll(page, size));
     }
 
     @GetMapping("/employee/{id}")

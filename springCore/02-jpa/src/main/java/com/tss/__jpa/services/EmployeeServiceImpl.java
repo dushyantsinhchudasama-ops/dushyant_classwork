@@ -2,10 +2,18 @@ package com.tss.__jpa.services;
 
 import com.tss.__jpa.dto.EmployeeRequestDto;
 import com.tss.__jpa.dto.EmployeeResponseDto;
+import com.tss.__jpa.dto.PageResponseDto;
+import com.tss.__jpa.dto.StudentResponseDto;
 import com.tss.__jpa.entity.Employee;
+import com.tss.__jpa.entity.Student;
+import com.tss.__jpa.exception.EmployeeNotFoundByIDException;
 import com.tss.__jpa.mapper.EmployeeMapper;
 import com.tss.__jpa.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,27 +26,60 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
 
+//    @Override
+//    public List<EmployeeResponseDto> readAll() {
+//
+//        List<Employee> employees = employeeRepository.findAll();
+//        List<EmployeeResponseDto> response = new ArrayList<>();
+//
+//        for(Employee employee : employees)
+//        {
+//            EmployeeResponseDto dto = new EmployeeResponseDto();
+//            dto.setId(employee.getId());
+//            dto.setName(employee.getName());
+//
+//            response.add(dto);
+//        }
+//        return response;
+//    }
+
+    //using pagination
+
     @Override
-    public List<EmployeeResponseDto> readAll() {
+    public PageResponseDto<EmployeeResponseDto> readAll(int page, int size) {
 
-        List<Employee> employees = employeeRepository.findAll();
-        List<EmployeeResponseDto> response = new ArrayList<>();
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by("id").ascending());
 
-        for(Employee employee : employees)
-        {
-            EmployeeResponseDto dto = new EmployeeResponseDto();
-            dto.setId(employee.getId());
-            dto.setName(employee.getName());
+        Page<Employee> employeePage = employeeRepository.findAll(pageable);
 
-            response.add(dto);
-        }
+        PageResponseDto<EmployeeResponseDto> response = new PageResponseDto<>();
+
+        response.setContent(
+                employeePage.getContent()
+                        .stream()
+                        .map(employeeMapper::responsetoEmployee)
+                        .toList()
+        );
+
+        response.setPageNumber(employeePage.getNumber());
+        response.setPageSize(employeePage.getSize());
+        response.setTotalElements(employeePage.getTotalElements());
+        response.setTotalPages(employeePage.getTotalPages());
+        response.setFirst(employeePage.isFirst());
+        response.setLast(employeePage.isLast());
+        response.setHasNext(employeePage.hasNext());
+        response.setHasPrevious(employeePage.hasPrevious());
+
         return response;
     }
 
     @Override
     public Employee getById(Long id) {
         return employeeRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("ID Does not found!")
+                () -> new EmployeeNotFoundByIDException(id)
         );
     }
 
