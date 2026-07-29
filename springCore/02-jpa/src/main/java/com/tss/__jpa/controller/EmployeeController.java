@@ -6,9 +6,12 @@ import com.tss.__jpa.dto.PageResponseDto;
 import com.tss.__jpa.dto.StudentResponseDto;
 import com.tss.__jpa.entity.Employee;
 import com.tss.__jpa.services.EmployeeService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +21,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequestMapping("/app")
 @RequiredArgsConstructor
+@Validated
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -39,13 +43,13 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee/{id}")
-    public Employee getByID(@PathVariable Long id)
+    public Employee getByID(@Positive(message = "Id Must be a positive value") @PathVariable Long id)
     {
         return employeeService.getById(id);
     }
 
     @PostMapping("/employee")
-    public ResponseEntity<EmployeeResponseDto> addEmployee(@RequestBody EmployeeRequestDto requestDto)
+    public ResponseEntity<EmployeeResponseDto> addEmployee(@Valid @RequestBody EmployeeRequestDto requestDto)
     {
         return new ResponseEntity<>(employeeService.addEmployee(requestDto), HttpStatus.CREATED);
     }
