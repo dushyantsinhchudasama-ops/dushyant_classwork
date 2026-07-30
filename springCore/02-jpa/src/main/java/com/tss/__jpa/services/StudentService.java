@@ -1,9 +1,7 @@
 package com.tss.__jpa.services;
 
 
-import com.tss.__jpa.dto.PageResponseDto;
-import com.tss.__jpa.dto.StudentRequestDto;
-import com.tss.__jpa.dto.StudentResponseDto;
+import com.tss.__jpa.dto.*;
 import com.tss.__jpa.entity.Student;
 import org.springframework.data.domain.Page;
 
@@ -24,4 +22,11 @@ public interface StudentService {
     PageResponseDto<StudentResponseDto> findStudentByName(int page, int size, String name);
 
     Integer deleteByAge(Integer age);
+
+    //methods for address
+    AddressResponseDto getAddress(Long id);
+
+    AddressResponseDto addAddress(Long id, AddressRequestDto requestDto);
+
+    AddressResponseDto udpateAddress(Long id, AddressRequestDto requestDto);
 }

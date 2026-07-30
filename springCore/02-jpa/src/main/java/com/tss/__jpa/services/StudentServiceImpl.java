@@ -1,10 +1,10 @@
 package com.tss.__jpa.services;
 
-import com.tss.__jpa.dto.PageResponseDto;
-import com.tss.__jpa.dto.StudentRequestDto;
-import com.tss.__jpa.dto.StudentResponseDto;
+import com.tss.__jpa.dto.*;
 import com.tss.__jpa.entity.Address;
 import com.tss.__jpa.entity.Student;
+import com.tss.__jpa.exception.AddressAlreadyExistsException;
+import com.tss.__jpa.exception.AddressNotFoundException;
 import com.tss.__jpa.exception.StudentNotFoundByIDException;
 import com.tss.__jpa.mapper.StudentMapper;
 import com.tss.__jpa.repository.StudentRepository;
@@ -138,5 +138,58 @@ public class StudentServiceImpl implements StudentService{
     @Transactional
     public Integer deleteByAge(Integer age) {
         return studentRepository.deleteByAge(age);
+    }
+
+    @Override
+    public AddressResponseDto getAddress(Long id) {
+
+        //first find student by id
+        Student student = getById(id);
+
+        if(student.getAddress() == null)
+            throw new AddressNotFoundException(id);
+
+        return studentMapper.addressToResponseDto(student.getAddress());
+    }
+
+    @Override
+    public AddressResponseDto addAddress(Long id, AddressRequestDto requestDto) {
+        Student student = getById(id);
+
+        if(student == null)
+            throw new StudentNotFoundByIDException(id);
+
+        if (student.getAddress() != null) {
+            throw new AddressAlreadyExistsException();
+        }
+
+
+        Address address = studentMapper.requestDtoToAddress(requestDto);
+
+        student.setAddress(address);
+
+        Student savedStudent = studentRepository.save(student);
+
+        return studentMapper.addressToResponseDto(savedStudent.getAddress());
+
+    }
+
+    @Override
+    public AddressResponseDto udpateAddress(Long id, AddressRequestDto requestDto) {
+        Student student = getById(id);
+
+        if(student == null)
+            throw new StudentNotFoundByIDException(id);
+
+        Address address = student.getAddress();
+
+        address.setState(requestDto.getState());
+        address.setCity(requestDto.getCity());
+        address.setPincode(requestDto.getPincode());
+
+        Student savedStudent = studentRepository.save(student);
+
+        return studentMapper.addressToResponseDto(savedStudent.getAddress());
+
     }
 }

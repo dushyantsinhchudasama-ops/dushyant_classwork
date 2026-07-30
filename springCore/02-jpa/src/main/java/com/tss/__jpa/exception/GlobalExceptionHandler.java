@@ -76,4 +76,38 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+
+    //validation for the address
+    @ExceptionHandler(AddressNotFoundException.class)
+    public ResponseEntity<Error> hanldeAddressNotfoundValidation(
+            AddressNotFoundException ex,
+            HttpServletRequest request) {
+
+        Error error = new Error(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    //validation for the address
+    @ExceptionHandler(AddressAlreadyExistsException.class)
+    public ResponseEntity<Error> hanldeAddressAlreadyExistValidation(
+            AddressAlreadyExistsException ex,
+            HttpServletRequest request) {
+
+        Error error = new Error(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+
 }

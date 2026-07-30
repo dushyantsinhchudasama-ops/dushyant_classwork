@@ -1,14 +1,13 @@
 package com.tss.__jpa.controller;
 
-import com.tss.__jpa.dto.PageResponseDto;
-import com.tss.__jpa.dto.StudentRequestDto;
-import com.tss.__jpa.dto.StudentResponseDto;
+import com.tss.__jpa.dto.*;
 import com.tss.__jpa.entity.Student;
 import com.tss.__jpa.error.Error;
 import com.tss.__jpa.exception.StudentNotFoundByIDException;
 import com.tss.__jpa.services.StudentService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
@@ -69,5 +68,26 @@ public class StudentController {
         return studentService.deleteByAge(age);
     }
 
+
+    @GetMapping("student/{id}/address")
+    public ResponseEntity<AddressResponseDto> getAddress(@PathVariable Long id)
+    {
+        return ResponseEntity.ok(studentService.getAddress(id));
+    }
+
+    @PostMapping("student/{id}/address")
+    public ResponseEntity<AddressResponseDto> addAddress(
+            @PathVariable Long id,
+            @RequestBody AddressRequestDto requestDto)
+    {
+        return ResponseEntity.ok(studentService.addAddress(id, requestDto));
+    }
+   @PutMapping("student/{id}/address")
+    public ResponseEntity<AddressResponseDto> updateAddress(
+            @PathVariable Long id,
+            @RequestBody AddressRequestDto requestDto)
+    {
+        return ResponseEntity.ok(studentService.udpateAddress(id, requestDto));
+    }
 
 }
