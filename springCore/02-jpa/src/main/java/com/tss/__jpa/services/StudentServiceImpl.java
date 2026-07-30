@@ -3,20 +3,18 @@ package com.tss.__jpa.services;
 import com.tss.__jpa.dto.PageResponseDto;
 import com.tss.__jpa.dto.StudentRequestDto;
 import com.tss.__jpa.dto.StudentResponseDto;
-import com.tss.__jpa.entity.Employee;
+import com.tss.__jpa.entity.Address;
 import com.tss.__jpa.entity.Student;
 import com.tss.__jpa.exception.StudentNotFoundByIDException;
 import com.tss.__jpa.mapper.StudentMapper;
 import com.tss.__jpa.repository.StudentRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -90,6 +88,13 @@ public class StudentServiceImpl implements StudentService{
 
         Student student = studentMapper.toStudentDto(requestDto);
 
+        Address address = new Address();
+        address.setState(requestDto.getState());
+        address.setCity(requestDto.getCity());
+        address.setPincode(requestDto.getPincode());
+
+        student.setAddress(address);
+
         Student result = studentRepository.save(student);
 
 //        StudentResponseDto responseDto = new StudentResponseDto();
@@ -97,5 +102,41 @@ public class StudentServiceImpl implements StudentService{
 //        responseDto.setName(result.getName());
 
         return studentMapper.responseDtoToStudent(result);
+    }
+
+    @Override
+    public PageResponseDto<StudentResponseDto> findStudentByName(int page, int size, String name) {
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by("name").ascending());
+
+        Page<Student> studentPage = studentRepository.findByName(name, pageable);
+
+        PageResponseDto<StudentResponseDto> response = new PageResponseDto<>();
+
+        response.setContent(
+                studentPage.getContent()
+                        .stream()
+                        .map(studentMapper::responseDtoToStudent)
+                        .toList()
+        );
+
+        response.setPageNumber(studentPage.getNumber());
+        response.setPageSize(studentPage.getSize());
+        response.setTotalElements(studentPage.getTotalElements());
+        response.setTotalPages(studentPage.getTotalPages());
+        response.setFirst(studentPage.isFirst());
+        response.setLast(studentPage.isLast());
+        response.setHasNext(studentPage.hasNext());
+        response.setHasPrevious(studentPage.hasPrevious());
+
+        return response;
+    }
+
+    @Override
+    @Transactional
+    public Integer deleteByAge(Integer age) {
+        return studentRepository.deleteByAge(age);
     }
 }

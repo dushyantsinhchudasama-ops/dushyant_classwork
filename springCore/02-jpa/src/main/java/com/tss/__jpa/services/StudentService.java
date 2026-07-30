@@ -20,4 +20,8 @@ public interface StudentService {
     public Student getById(Long id);
 
     StudentResponseDto addStudent(StudentRequestDto requestDto);
+
+    PageResponseDto<StudentResponseDto> findStudentByName(int page, int size, String name);
+
+    Integer deleteByAge(Integer age);
 }

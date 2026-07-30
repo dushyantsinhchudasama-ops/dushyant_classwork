@@ -19,4 +19,9 @@ public class Student {
     @Column(name = "student_age")
     private Integer age;
 
+    //this is for address storing
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
+
 }

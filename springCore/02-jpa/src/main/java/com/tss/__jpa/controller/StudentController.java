@@ -35,13 +35,19 @@ public class StudentController {
 //    }
 
     @GetMapping("/students")
-    public ResponseEntity<PageResponseDto<StudentResponseDto>> getAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "1") int size) {
+    public ResponseEntity<PageResponseDto<StudentResponseDto>> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int size ,
+            @RequestParam(required = false) String name) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("App-Name","JPA Testing app");
         headers.add("Version","1.0");
 
-        return ResponseEntity.ok(studentService.readAll(page, size));
+        if(name == null)
+            return ResponseEntity.ok(studentService.readAll(page, size));
+
+        return ResponseEntity.ok(studentService.findStudentByName(page, size, name));
     }
 
     @GetMapping("/students/{id}")
@@ -55,6 +61,12 @@ public class StudentController {
     {
 //        return ResponseEntity.status(CREATED).body(studentService.addStudent(student));
         return new ResponseEntity<>(studentService.addStudent(requestDto), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/students/{age}")
+    public Integer deleteByAge(@PathVariable Integer age)
+    {
+        return studentService.deleteByAge(age);
     }
 
 
