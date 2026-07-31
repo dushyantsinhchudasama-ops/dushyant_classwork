@@ -3,12 +3,17 @@ package com.tss.__jpa.services;
 import com.tss.__jpa.dto.CourseRequestDto;
 import com.tss.__jpa.dto.CourseResponseDto;
 import com.tss.__jpa.dto.InstructorResponseDto;
+import com.tss.__jpa.dto.StudentResponseDto;
 import com.tss.__jpa.entity.Course;
 import com.tss.__jpa.entity.Instructor;
+import com.tss.__jpa.entity.Student;
+import com.tss.__jpa.exception.StudentNotFoundByIDException;
 import com.tss.__jpa.mapper.CourseMapper;
 import com.tss.__jpa.mapper.InstructorMapper;
+import com.tss.__jpa.mapper.StudentMapper;
 import com.tss.__jpa.repository.CourseRepository;
 import com.tss.__jpa.repository.InstructorRepository;
+import com.tss.__jpa.repository.StudentRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,7 +32,9 @@ public class CourseServiceImpl implements CourseService{
     private final CourseRepository courseRepository;
     private final CourseMapper courseMapper;
     private final InstructorRepository instructorRepository;
+    private final StudentRepository studentRepository;
     private final InstructorMapper instructorMapper;
+    private final StudentMapper studentMapper;
 
     @Override
     public CourseResponseDto addCourse(CourseRequestDto requestDto) {
@@ -91,5 +98,31 @@ public class CourseServiceImpl implements CourseService{
         }
 
         return responses;
+    }
+
+    @Override
+    public void assignStudent(Long courseId, Long studentId) {
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(()-> new RuntimeException("Course not found"));
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(()-> new StudentNotFoundByIDException(studentId));
+
+        course.getStudents().add(student);
+
+        courseRepository.save(course);
+    }
+
+    @Override
+    public List<StudentResponseDto> getAllStudentsByID(Long courseId) {
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(()-> new RuntimeException("Course not found"));
+
+        return course.getStudents()
+                .stream()
+                .map(studentMapper::responseDtoToStudent)
+                .toList();
     }
 }

@@ -4,6 +4,8 @@ import com.tss.__jpa.dto.*;
 import com.tss.__jpa.services.CourseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -43,6 +45,21 @@ public class CourseController {
     public ResponseEntity<InstructorResponseDto> getInstructure(@PathVariable Long courseId)
     {
         return ResponseEntity.ok(courseService.getCourse(courseId));
+    }
+
+
+    //assigning student to a course
+    @PostMapping("/course/{courseId}/student/{studentId}")
+    public ResponseEntity<Void> assignStudent(@PathVariable Long courseId,@PathVariable Long studentId)
+    {
+        courseService.assignStudent(courseId, studentId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/course/{courseId}/students")
+    public ResponseEntity<List<StudentResponseDto>> getAllStudentByCourseID(@PathVariable Long courseId)
+    {
+        return ResponseEntity.ok(courseService.getAllStudentsByID(courseId));
     }
 
 }

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.Collate;
 
+import java.util.List;
+
 @Entity
 @Table(name = "courses")
 @Data
@@ -23,4 +25,7 @@ public class Course {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "instructor_id")
     private Instructor instructor;
+
+    @ManyToMany(mappedBy = "courses")
+    List<Student> students;
 }

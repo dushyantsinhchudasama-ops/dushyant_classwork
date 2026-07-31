@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.SpringApplicationEvent;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Data
 @Entity(name = "student")
@@ -24,4 +26,9 @@ public class Student {
     @JoinColumn(name = "address_id")
     private Address address;
 
+    @ManyToMany
+    @JoinTable(name = "student_course",
+        joinColumns = @JoinColumn(name = "student_id"),
+        inverseJoinColumns = @JoinColumn(name = "course_id") )
+    List<Course> courses;
 }

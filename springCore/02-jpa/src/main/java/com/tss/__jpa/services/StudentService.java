@@ -29,4 +29,10 @@ public interface StudentService {
     AddressResponseDto addAddress(Long id, AddressRequestDto requestDto);
 
     AddressResponseDto udpateAddress(Long id, AddressRequestDto requestDto);
+
+    void assignCourse(Long studentId, Long courseId);
+
+    void assignCourses(Long studentId, List<Long> courseId);
+
+    List<CourseResponseDto> getAllCourseByID(Long studentId);
 }

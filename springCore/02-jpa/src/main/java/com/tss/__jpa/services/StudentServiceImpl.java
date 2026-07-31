@@ -2,11 +2,14 @@ package com.tss.__jpa.services;
 
 import com.tss.__jpa.dto.*;
 import com.tss.__jpa.entity.Address;
+import com.tss.__jpa.entity.Course;
 import com.tss.__jpa.entity.Student;
 import com.tss.__jpa.exception.AddressAlreadyExistsException;
 import com.tss.__jpa.exception.AddressNotFoundException;
 import com.tss.__jpa.exception.StudentNotFoundByIDException;
+import com.tss.__jpa.mapper.CourseMapper;
 import com.tss.__jpa.mapper.StudentMapper;
+import com.tss.__jpa.repository.CourseRepository;
 import com.tss.__jpa.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +19,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService{
 
     private final StudentRepository studentRepository;
+    private final CourseRepository courseRepository;
     private final StudentMapper studentMapper;
+    private final CourseMapper courseMapper;
 
 //    @Override
 //    public List<StudentResponseDto> readAll() {
@@ -191,5 +198,54 @@ public class StudentServiceImpl implements StudentService{
 
         return studentMapper.addressToResponseDto(savedStudent.getAddress());
 
+    }
+
+    @Override
+    public void assignCourse(Long studentId, Long courseId) {
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(()-> new StudentNotFoundByIDException(studentId));
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(()-> new RuntimeException("Course not found"));
+
+        student.getCourses().add(course);
+
+        studentRepository.save(student);
+    }
+
+    @Override
+    @Transactional
+    public void assignCourses(Long studentId, List<Long> courseId) {
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(()-> new StudentNotFoundByIDException(studentId));
+
+
+        List<Course> courses = courseRepository.findAllById(courseId);
+
+        if (courses.size() != courseId.size()) {
+            throw new RuntimeException("One or more course IDs are invalid.");
+        }
+
+        for (Course course : courses) {
+            student.getCourses().add(course);
+            // keep both sides synchronized
+            //course.getStudents().add(student);
+        }
+
+        studentRepository.save(student);
+    }
+
+    @Override
+    public List<CourseResponseDto> getAllCourseByID(Long studentId) {
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(()-> new StudentNotFoundByIDException(studentId));
+
+        return student.getCourses()
+                .stream()
+                .map(courseMapper::toDto)
+                .toList();
     }
 }

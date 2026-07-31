@@ -90,4 +90,29 @@ public class StudentController {
         return ResponseEntity.ok(studentService.udpateAddress(id, requestDto));
     }
 
+    //assigning a course to a student
+    @PostMapping("student/{studentId}/course/{courseId}")
+    public ResponseEntity<Void> assignCourse(@PathVariable Long studentId, @PathVariable Long courseId)
+    {
+        studentService.assignCourse(studentId, courseId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //assigning multiple courses to a student
+    @PostMapping("student/{studentId}/courses")
+    public ResponseEntity<Void> assignMultipleCourse(@PathVariable Long studentId, @RequestBody List<Long> courseId)
+    {
+        studentService.assignCourses(studentId, courseId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //read all courses of a student
+    @GetMapping("/student/{studentId}/courses")
+    public ResponseEntity<List<CourseResponseDto>> readAllCoursesById(@PathVariable Long studentId)
+    {
+        return ResponseEntity.ok(studentService.getAllCourseByID(studentId));
+    }
+
+
+
 }
