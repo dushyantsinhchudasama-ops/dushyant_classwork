@@ -1,15 +1,25 @@
 package com.tss.__jpa.services;
 
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber; // ✅ Correctimport org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 @Service("sms")
-@Primary // this will make it default means when no tyeps are provided default will be the message and it's object will be created and method will be called
-public class SMSNotification implements Notification{
+@Primary
+public class SMSNotification implements Notification {
+
+    @Value("${twilio.phone.number}")
+    private String fromNumber;
+
     @Override
     public void sendNotification(String message, String receiver) {
 
-        System.out.println("Notification "+ message +" send through SMS to: " + receiver);
-
+        Message.creator(
+                new PhoneNumber(receiver),
+                new PhoneNumber(fromNumber),
+                message
+        ).create();
     }
 }

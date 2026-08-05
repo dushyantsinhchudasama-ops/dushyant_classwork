@@ -34,9 +34,13 @@ public class NotificationController {
     @PostMapping("/notify")
     public void sendNotification(@RequestParam(required = false) String type, @RequestParam String message, @RequestParam String receiver)
     {
-        if(type == null)
-            notification.sendNotification(message, receiver);
-        else
-            processor.send(type, message, receiver);
+        try {
+            if (type == null)
+                notification.sendNotification(message, receiver);
+            else
+                processor.send(type, message, receiver);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }
