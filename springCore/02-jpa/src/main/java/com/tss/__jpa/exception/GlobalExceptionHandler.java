@@ -4,6 +4,8 @@ import com.tss.__jpa.error.Error;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.coyote.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +20,14 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     //this method will be used for handlind the exceptions
     @ExceptionHandler(StudentNotFoundByIDException.class)
     public ResponseEntity<com.tss.__jpa.error.Error> handleStudentNotFoundByIDException(StudentNotFoundByIDException exception, HttpServletRequest request) {
         com.tss.__jpa.error.Error error = new Error(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getRequestURI());
+
+        logger.error(exception.getMessage());
 
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
@@ -30,6 +36,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EmployeeNotFoundByIDException.class)
     public ResponseEntity<Error> handlseEmployeeNotFoundException(EmployeeNotFoundByIDException exception, HttpServletRequest request) {
         Error error = new Error(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getRequestURI());
+
+        logger.error(exception.getMessage());
+
 
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
@@ -55,6 +64,9 @@ public class GlobalExceptionHandler {
                 builder.toString(),
                 request.getRequestURI());
 
+        logger.error(exception.getMessage());
+
+
         return new ResponseEntity<>(
                 error,
                 HttpStatus.BAD_REQUEST
@@ -74,6 +86,9 @@ public class GlobalExceptionHandler {
                 request.getRequestURI()
         );
 
+        logger.error(ex.getMessage());
+
+
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -89,6 +104,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage(),
                 request.getRequestURI()
         );
+        logger.error(ex.getMessage());
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
@@ -105,6 +121,8 @@ public class GlobalExceptionHandler {
                 ex.getMessage(),
                 request.getRequestURI()
         );
+
+        logger.error(ex.getMessage());
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }

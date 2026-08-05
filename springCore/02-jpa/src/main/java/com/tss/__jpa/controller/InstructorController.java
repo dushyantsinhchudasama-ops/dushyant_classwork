@@ -1,9 +1,6 @@
 package com.tss.__jpa.controller;
 
-import com.tss.__jpa.dto.CourseRequestDto;
-import com.tss.__jpa.dto.CourseResponseDto;
-import com.tss.__jpa.dto.InstructorRequestDto;
-import com.tss.__jpa.dto.InstructorResponseDto;
+import com.tss.__jpa.dto.*;
 import com.tss.__jpa.services.InstructorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -44,5 +41,22 @@ public class InstructorController {
     {
         return ResponseEntity.ok(instructorService.getCourse(instructorId));
     }
+
+    //get count of courses for particular instructor
+    @GetMapping("/instructor/{instructorId}/course/count")
+    public ResponseEntity<Integer> getCoursesCount(@PathVariable Long instructorId)
+    {
+        return ResponseEntity.ok(instructorService.getCourseCount(instructorId));
+    }
+
+
+    //get count of courses for all instructor
+    @GetMapping("/instructor/course-count")
+    public ResponseEntity<List<CountOfCourseForAllInstructors>> getCoursesCountForAllInstructors()
+    {
+        return ResponseEntity.ok(instructorService.getCourseCountPerInstructor());
+    }
+
+
 
 }

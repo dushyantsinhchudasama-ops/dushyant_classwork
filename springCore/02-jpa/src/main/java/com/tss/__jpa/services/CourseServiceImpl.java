@@ -19,6 +19,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.processing.Find;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,20 +38,23 @@ public class CourseServiceImpl implements CourseService{
     private final InstructorMapper instructorMapper;
     private final StudentMapper studentMapper;
 
+    private static final Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
+
     @Override
     public CourseResponseDto addCourse(CourseRequestDto requestDto) {
 
-        System.out.println("DTO = " + requestDto);
+//        System.out.println("DTO = " + requestDto);
 
         Course course = courseMapper.toEntity(requestDto);
 
-        System.out.println("Entity = " + course);
-
-        System.out.println("DTO = " + requestDto);
+//        System.out.println("Entity = " + course);
+//
+//        System.out.println("DTO = " + requestDto);
 
         Course saved = courseRepository.save(course);
 
-        System.out.println("Saved = " + saved);
+//        System.out.println("Saved = " + saved);
+        logger.info("Course saved: " + course.getCourseId());
 
         return courseMapper.toDto(saved);
     }
@@ -68,6 +73,8 @@ public class CourseServiceImpl implements CourseService{
         course.setInstructor(instructor);
 
         courseRepository.save(course);
+
+        logger.info("Assigned instructor : " + course.getInstructor().getInstructorId() + " assigned to course: " + course.getCourseId());
     }
 
     @Override

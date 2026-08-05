@@ -1,5 +1,6 @@
 package com.tss.__jpa.services;
 
+import com.tss.__jpa.dto.CountOfCourseForAllInstructors;
 import com.tss.__jpa.dto.CourseResponseDto;
 import com.tss.__jpa.dto.InstructorRequestDto;
 import com.tss.__jpa.dto.InstructorResponseDto;
@@ -13,6 +14,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ public class InstructorServiceImpl implements InstructorService{
     private final InstructorMapper instructorMapper;
     private final CourseRepository courseRepository;
     private final CourseMapper courseMapper;
+    private static final Logger logger = LoggerFactory.getLogger(InstructorServiceImpl.class);
 
     @Override
     public InstructorResponseDto addInstructor(InstructorRequestDto requestDto) {
@@ -35,7 +39,10 @@ public class InstructorServiceImpl implements InstructorService{
 
         Instructor saved = instructorRepository.save(instructor);
 
+        logger.info("Instructure added: " + saved.getInstructorId());
+
         return instructorMapper.toDto(saved);
+
     }
 
     @Override
@@ -50,6 +57,9 @@ public class InstructorServiceImpl implements InstructorService{
         course.setInstructor(instructor);
 
         courseRepository.save(course);
+
+        logger.info("Instructure :" + course.getInstructor().getInstructorId() + " assigned to course: " + course.getCourseId());
+
     }
 
     //get courses for particular instructor
@@ -80,5 +90,36 @@ public class InstructorServiceImpl implements InstructorService{
         }
 
         return responses;
+    }
+
+    @Override
+    public Integer getCourseCount(Long instructorId) {
+//        instructorRepository.findById(instructorId)
+//                .orElseThrow(()->new RuntimeException("Cannot find instructor with id : " + instructorId));
+
+        return instructorRepository.getCourseCount(instructorId);
+    }
+
+    @Override
+    public List<CountOfCourseForAllInstructors> getCourseCountPerInstructor() {
+
+//        //getting all the instructors first
+//        List<Instructor> instructors = instructorRepository.findAll();
+//
+//        return instructors
+//                .stream()
+//                .map(
+//                        instructor -> new CountOfCourseForAllInstructors(
+//                                instructor.getName(),
+//                                instructor.getCourses().size()
+//                        )
+//                )
+//                .toList();
+
+
+
+        //using jpql
+        return instructorRepository.getCourseCountPerInstructor();
+
     }
 }

@@ -1,5 +1,6 @@
 package com.tss.__jpa.services;
 
+import com.tss.__jpa.dto.CountOfCourseForAllInstructors;
 import com.tss.__jpa.dto.CourseResponseDto;
 import com.tss.__jpa.dto.InstructorRequestDto;
 import com.tss.__jpa.dto.InstructorResponseDto;
@@ -15,4 +16,8 @@ public interface InstructorService {
     List<CourseResponseDto> getCourse(Long instructorId);
 
     List<InstructorResponseDto> readAll();
+
+    Integer getCourseCount(Long instructorId);
+
+    List<CountOfCourseForAllInstructors> getCourseCountPerInstructor();
 }

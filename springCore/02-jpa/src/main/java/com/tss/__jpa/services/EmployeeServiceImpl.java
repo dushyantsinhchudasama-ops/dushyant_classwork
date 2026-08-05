@@ -10,6 +10,8 @@ import com.tss.__jpa.exception.EmployeeNotFoundByIDException;
 import com.tss.__jpa.mapper.EmployeeMapper;
 import com.tss.__jpa.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
+    private final static Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
 //    @Override
 //    public List<EmployeeResponseDto> readAll() {
@@ -97,6 +100,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 //       EmployeeResponseDto response = new EmployeeResponseDto();
 //       response.setId(result.getId());
 //       response.setName(result.getName());
+
+        logger.info("Employee added successfully with id: {}", result.getId());
 
        return employeeMapper.responsetoEmployee(result);
     }
