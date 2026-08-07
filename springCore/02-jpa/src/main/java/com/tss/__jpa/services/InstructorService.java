@@ -20,4 +20,6 @@ public interface InstructorService {
     Integer getCourseCount(Long instructorId);
 
     List<CountOfCourseForAllInstructors> getCourseCountPerInstructor();
+
+    Boolean canDeleteInstructor(Long instructorId);
 }

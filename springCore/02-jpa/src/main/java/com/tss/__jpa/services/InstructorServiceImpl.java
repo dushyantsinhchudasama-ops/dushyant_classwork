@@ -122,4 +122,12 @@ public class InstructorServiceImpl implements InstructorService{
         return instructorRepository.getCourseCountPerInstructor();
 
     }
+
+    @Override
+    public Boolean canDeleteInstructor(Long instructorId) {
+
+        Integer count = getCourseCount(instructorId);
+
+        return count == 0;
+    }
 }
