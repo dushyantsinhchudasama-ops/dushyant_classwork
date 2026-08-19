@@ -1,0 +1,18 @@
+<hr>
+
+<h2 class="text-success">Home Page</h2>
+<div class="d-flex justify-content-center">
+    <button class="btn" [ngClass]="isActive ? 'btn-success' : 'btn-primary'" (click)="switchRole('admin')">Admin</button>
+    <button class="btn" [ngClass]="!isActive ? 'btn-success' : 'btn-primary'" (click)="switchRole('member')">Member</button>
+</div>
+
+@if(isActive) {
+  <app-admin></app-admin>
+} 
+@else {
+  <app-member></app-member>
+}
+
+
+
+<h4 appHighlight>This is sentence</h4>

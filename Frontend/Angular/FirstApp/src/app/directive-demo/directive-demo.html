@@ -1,0 +1,144 @@
+<h3>Structural Directives</h3>
+
+*ngIf : <div *ngIf="toDisplay">
+    Displayed If toDisplay is true
+</div>
+
+<br>
+*ngIf-else : <div *ngIf="toDisplay; else noDisplay">
+    Displayed If toDisplay is true
+</div>
+<ng-template #noDisplay>
+    Displayed If toDisplay is false
+</ng-template>
+
+<hr>
+<br>
+
+@if(num < 100)
+{
+    <p>Num is less than 100</p>
+}
+@else
+{
+    <p>Num is greater than or equal to 100</p>
+}
+
+<ul>
+    <li *ngFor="let num of listNum">{{ num }}</li>
+</ul>
+
+@for(num of listNum; track $index; let idx = $index; let o=$odd)
+{
+    <p>{{ idx + 1 }} : {{ num }} : {{o}}</p>
+}@empty
+{
+    <p>No data is present in the list</p>
+}
+
+
+<hr>
+
+<h3 class="form-label bg-danger text-white" > For Genre:</h3>
+
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Genre ID</th>
+            <th>Genre Code</th>
+            <th>Genre Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(g of listGenre; track g.genreId; let idx = $index; let o=$odd)
+        {
+            <tr>
+                <td>{{ g.genreId }}</td>
+                <td>{{ g.genreCode }}</td>
+                <td>{{ g.genreDesc }}</td>
+            </tr>
+        }@empty
+        {
+            <tr>
+                <td colspan="3">No data is present in the list</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+<hr>
+<hr>
+<hr>
+
+<h3 class="form-label bg-primary text-white" > For Movies:</h3>
+
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Movie ID</th>
+            <th>Movie Title</th>
+            <th>Movie Rating</th>
+            <th>Release Date</th>
+            <th>Genre ID</th>
+            <th>Discount</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @for(m of listMovie; track m.movieId; let idx = $index; let o=$odd)
+        {
+            <tr>
+
+                <td [ngStyle]="{'font-weight': checkEvenOdd(m.movieId)}">
+                    {{ m.movieId }}
+                </td>
+
+                <td [ngStyle]="{'color' : 'brown', 'font-size': 'larger'}">
+                    {{ m.movieTitle }}
+                </td>
+
+                <td [ngStyle]="{'color' : m.movieRating >= 4 ? 'green': 'red'}">
+                    {{ m.movieRating }}
+                </td>
+
+                <td>
+                    {{ m.releaseDate | date : 'shortTime' }}
+                </td>
+
+                <td>
+                    {{ m.genreId }}
+                </td>
+
+                <td>
+                    {{ m.movieRating | movieDiscount }}
+                </td>
+
+                <td>
+                    <button class="btn btn-secondary" (click)="updMovieToChild(idx)">Send Data to Parent</button>
+                </td>
+            </tr>
+        }
+
+        @empty
+        {
+            <tr>
+                <td colspan="6">No data is present in the list</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+
+<hr>
+
+<app-movie-detail [movieFromParent]="movieToChild"></app-movie-detail>
+
+<hr>

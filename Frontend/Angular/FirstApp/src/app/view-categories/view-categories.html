@@ -1,0 +1,21 @@
+<h2>Categories</h2>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Category Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (category of categories; track category.categoryId) {
+      <tr>
+        <td>{{ category.categoryId }}</td>
+        <td>{{ category.categoryName }}</td>
+        <td>{{ category.description }}</td>
+      </tr>
+    }
+  </tbody>
+</table>

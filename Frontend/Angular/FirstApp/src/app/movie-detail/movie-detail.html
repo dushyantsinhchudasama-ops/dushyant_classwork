@@ -1,0 +1,20 @@
+<h3>Movie Detail</h3>
+<p>Data from Parent : {{dataFromParent}}</p>
+
+<br>
+<br>
+
+<p>Movie From parent : 
+
+<br>
+Movie ID : {{movieFromParent.movieId}} <br>
+Movie Name : {{movieFromParent.movieTitle}} <br>
+Movie Rating : {{movieFromParent.movieRating}} <br>
+Release Date : {{movieFromParent.releaseDate | date}} <br>
+Genre ID : {{movieFromParent.genreId}} <br>
+</p>
+
+<br>
+<br>
+
+<button (clicl)="sendDataToParend()">Send to Parent</button>

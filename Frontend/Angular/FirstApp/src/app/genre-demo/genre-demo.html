@@ -1,0 +1,51 @@
+
+<h2>Genre Information</h2>
+<!-- display genre information using string interpolation -->
+<p>Genre ID: {{ genreID }}</p>
+<p>Genre Description: {{ genreDesc }}</p>
+<p>Genre Code: {{ genreCode }}</p>
+
+
+
+<!-- methamatical operations using interpolation -->
+
+<p>Mathematical Operation: {{ 10 + 2 * 3 }}</p>
+
+
+<p>output for getString(): {{ getString() }}</p>
+
+
+<p>Ternary Operation: {{ num%2==0 ? 'Even number' : 'Odd number' }}</p>
+
+
+<!--properties binding -->
+
+<h3>Properties Binding - Component -> Template</h3>
+
+<p>Genere DESC : <span [innerText] = "genreDesc"></span></p>
+<p>Output of a method : <span [innerText] = "getString()"></span></p>
+<p>Methamatical expression : <span [innerText] = "10 + 2 * 3"></span></p>
+
+
+Enter GenereCode : <input [value] = "genreCode" (change)="updGenere($event)" />
+
+<p>Value entered is : {{ genreCode }}</p>
+
+
+<h3>Event Binding - Template -> Component</h3>
+
+<button class="btn btn-success" (click) = "updNum()">NUM * 3</button>
+<p>Updated number: {{ num }}</p>
+
+<h3>TWO way(Banana) Binding - Template -> Component && Component -> Template</h3>
+
+Enter Gener Description : <input name="GenereDesc" [(ngModel)] = "genreDesc"/>
+<p>Value entered is : {{genreDesc}}</p>
+
+
+Select state : <select [(ngModel)] = "selectedState">
+    <option value = "MH">Maharashtra</option>
+    <option value = "GJ">Gujarat</option>
+    <option value = "RJ">Rajasthan</option>
+</select>
+<p>Selected state: {{ selectedState }}</p>

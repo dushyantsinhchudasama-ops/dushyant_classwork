@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/03-CalculatorDemo/03-CalculatorDemo.iml" filepath="$PROJECT_DIR$/03-CalculatorDemo/03-CalculatorDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/03-TestProject/03-TestProject.iml" filepath="$PROJECT_DIR$/03-TestProject/03-TestProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/04-ClassesAndObjects/04-ClassesAndObjects.iml" filepath="$PROJECT_DIR$/04-ClassesAndObjects/04-ClassesAndObjects.iml" />
+      <module fileurl="file://$PROJECT_DIR$/05-StaticDataMembers/05-StaticDataMembers.iml" filepath="$PROJECT_DIR$/05-StaticDataMembers/05-StaticDataMembers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/tss june.iml" filepath="$PROJECT_DIR$/.idea/tss june.iml" />
+    </modules>
+  </component>
+</project>
