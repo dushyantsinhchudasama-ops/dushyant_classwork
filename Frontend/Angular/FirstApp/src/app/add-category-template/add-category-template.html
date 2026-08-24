@@ -1,10 +1,14 @@
-<h3>Add new Category</h3>
+<h3>Add New Category</h3>
 
 <div class="container">
+
   <div class="row">
+
     <div class="form-bg">
 
-      <form #addCategoryForm="ngForm" (ngSubmit)="addCategory()">
+      <form
+        #addCategoryForm="ngForm"
+        (ngSubmit)="addCategoryForm.valid && addCategory()">
 
         <div class="panel panel-primary">
 
@@ -14,42 +18,93 @@
 
           <div class="panel-body">
 
+            <!-- Category Name -->
+
             <div class="form-group">
-              <label for="categoryName">Category Name</label>
+
+              <label for="categoryName">
+                Category Name
+              </label>
 
               <input
-                
+                type="text"
                 class="form-control"
-               
                 name="categoryName"
-                [(ngModel)]="category.categoryName">
+                id="categoryName"
+                required
+                [(ngModel)]="category.categoryName"
+                #categoryName="ngModel">
+
+              @if (categoryName.invalid && (categoryName.touched || categoryName.dirty)) {
+
+                @if (categoryName.errors?.['required']) {
+
+                  <span class="text-danger text-small">
+                    Category Name is Required
+                  </span>
+
+                }
+
+              }
+
             </div>
 
+
+            <!-- Description -->
+
             <div class="form-group">
-              <label for="description">Description</label>
+
+              <label for="description">
+                Category Description
+              </label>
 
               <input
-                
+                type="text"
                 class="form-control"
-                
                 name="description"
-                [(ngModel)]="category.description">
+                id="description"
+                [(ngModel)]="category.description"
+                #description="ngModel">
+
             </div>
 
           </div>
 
         </div>
 
-        <button type="submit" class="btn btn-primary">
+
+        <!-- Submit Button -->
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="addCategoryForm.invalid">
+
           Add Category
+
         </button>
 
       </form>
 
     </div>
+
   </div>
+
 </div>
 
 
-<p>Cat Name : {{category.categoryName}}</p>
-<p>Cat Name : {{category.description}}</p>
+<hr>
+
+<p>Category Name : {{category.categoryName}}</p>
+
+<p>Description : {{category.description}}</p>
+
+<p>Form Valid : {{addCategoryForm.valid}}</p>
+
+<p>Category Name Valid : {{categoryName.valid}}</p>
+
+<p>Category Name Touched : {{categoryName.touched}}</p>
+
+<p>Category Name Dirty : {{categoryName.dirty}}</p>
+
+<p>Form Data : {{addCategoryForm.value | json}}</p>

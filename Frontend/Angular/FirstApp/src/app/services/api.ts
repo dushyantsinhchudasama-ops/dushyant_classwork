@@ -11,9 +11,19 @@ export class Api {
   constructor(private http: HttpClient) {}
 
   getCategories(): Observable<CategoryResponse> {
-    
+
     return this.http.get<CategoryResponse>(
       'http://localhost:8080/api/categories'
     );
   }
+
+
+  addCategory(category: any): Observable<any> {
+
+  return this.http.post<any>(
+    'http://localhost:8080/api/categories',
+    category
+  );
+
+}
 }

@@ -1,0 +1,258 @@
+<form
+    [formGroup]="addBookForm"
+    (ngSubmit)="addBook()"
+>
+
+
+    <div class="panel panel-primary">
+
+
+        <div class="panel-heading">
+
+            <h3 class="panel-title">
+                Book Details
+            </h3>
+
+        </div>
+
+
+        <div class="panel-body">
+
+
+            <!-- Book Title -->
+
+            <div class="form-group">
+
+                <label for="">
+                    Book Title
+                </label>
+
+
+                <input
+                    class="form-control"
+                    name="title"
+                    formControlName="title"
+                >
+
+
+                @if(
+                    bookTitle.invalid &&
+                    (
+                        bookTitle.touched ||
+                        bookTitle.dirty
+                    )
+                )
+                {
+
+                    @if(
+                        bookTitle.hasError('required')
+                    )
+                    {
+
+                        <span class="text-danger">
+                            Book Title is required
+                        </span>
+
+                    }
+
+
+                    @if(
+                        bookTitle.hasError('minlength')
+                    )
+                    {
+
+                        <span class="text-danger">
+                            Book Title should be at least
+                            5 characters
+                        </span>
+
+                    }
+
+                }
+
+            </div>
+
+
+            <!-- ISBN -->
+
+            <div class="form-group">
+
+                <label for="">
+                    ISBN
+                </label>
+
+
+                <input
+                    class="form-control"
+                    name="isbn"
+                    formControlName="isbn"
+                >
+
+
+                @if(
+                    isbn.invalid &&
+                    (
+                        isbn.touched ||
+                        isbn.dirty
+                    )
+                )
+                {
+
+                    @if(
+                        isbn.hasError('required')
+                    )
+                    {
+
+                        <span class="text-danger">
+                            ISBN is required
+                        </span>
+
+                    }
+
+                }
+
+            </div>
+
+
+            <!-- Price -->
+
+            <div class="form-group">
+
+                <label for="">
+                    Price
+                </label>
+
+
+                <input
+                    type="number"
+                    class="form-control"
+                    name="price"
+                    formControlName="price"
+                >
+
+
+                @if(
+                    price.invalid &&
+                    (
+                        price.touched ||
+                        price.dirty
+                    )
+                )
+                {
+
+                    @if(
+                        price.hasError('required')
+                    )
+                    {
+
+                        <span class="text-danger">
+                            Price is required
+                        </span>
+
+                    }
+
+
+                    @if(
+                        price.hasError('min')
+                    )
+                    {
+
+                        <span class="text-danger">
+                            Price must be greater than 0
+                        </span>
+
+                    }
+
+                }
+
+            </div>
+
+
+            <!-- Publisher -->
+
+            <div class="form-group">
+
+                <label for="">
+                    Publisher
+                </label>
+
+
+                <select
+                    name="publisherId"
+                    class="form-control"
+                    formControlName="publisherId"
+                >
+
+
+                    <option value="">
+                        Select Publisher
+                    </option>
+
+
+                    @for(
+                        publisher of publishers;
+                        track publisher.publisherId
+                    )
+                    {
+
+                        <option
+                            [value]="publisher.publisherId"
+                        >
+
+                            {{ publisher.publisherName }}
+
+                        </option>
+
+                    }
+
+
+                </select>
+
+
+                @if(
+                    publisherId.invalid &&
+                    (
+                        publisherId.touched ||
+                        publisherId.dirty
+                    )
+                )
+                {
+
+                    @if(
+                        publisherId.hasError('required')
+                    )
+                    {
+
+                        <span class="text-danger">
+                            Publisher is required
+                        </span>
+
+                    }
+
+                }
+
+            </div>
+
+
+            <br>
+
+
+            <!-- Submit -->
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="addBookForm.invalid"
+            >
+
+                Add Book
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+</form>
