@@ -21,10 +21,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final RestTemplate restTemplate;
     private final WebClient webClient;
+    private final DepartmentAPIClient departmentAPIClient;
 
     public EmployeeResponseDto createEmployee(EmployeeRequestDto request) {
 
         Employee employee = new Employee();
+
+        DeptDto deptDto = departmentAPIClient.getDepartment(request.getDepartmentNo());
+
+//        if(deptDto == null)
+//            throw new RuntimeException("Invalid Department ID : " + request.getDepartmentNo());
 
         employee.setEmployeeName(request.getEmployeeName());
         employee.setSalary(request.getSalary());
@@ -80,13 +86,34 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         //following is for getting using web client (web flux)
 
-        DeptDto dto = webClient.get()
-                .uri("http://localhost:8080/api/dept/" + employee.getDepartmentNo())
-                .retrieve()
-                .bodyToMono(DeptDto.class)
-                .block(); //use this when we want to use asynchronous
+//        DeptDto dto = webClient.get()
+//                .uri("http://localhost:8080/api/dept/" + employee.getDepartmentNo())
+//                .retrieve()
+//                .bodyToMono(DeptDto.class)
+//                .block(); //use this when we want to use asynchronous
+
+        DeptDto dto = departmentAPIClient.getDepartment(employee.getDepartmentNo());
 
         return new ApiResponse(employee, dto);
+    }
+
+    @Override
+    public EmployeeResponseDto updateEmpDept(Long id, Long deptId) {
+
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Invalid Employee ID : " + id));
+
+        DeptDto deptDto = departmentAPIClient.getDepartment(deptId);
+
+//        if (deptDto == null) {
+//            throw new RuntimeException("Invalid Department ID : " + deptId);
+//        }
+
+        employee.setDepartmentNo(deptId);
+
+        Employee updatedEmployee = employeeRepository.save(employee);
+
+        return new EmployeeResponseDto(updatedEmployee.getEmployeeId(), updatedEmployee.getEmployeeName(), updatedEmployee.getSalary(), updatedEmployee.getDepartmentNo());
     }
 
 }

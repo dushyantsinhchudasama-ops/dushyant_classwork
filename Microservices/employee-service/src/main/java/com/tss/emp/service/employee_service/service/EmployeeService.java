@@ -13,4 +13,6 @@ public interface EmployeeService {
     List<EmployeeResponseDto> getAllEmployees();
     EmployeeResponseDto getEmployeeById(Long id);
     ApiResponse getEmployeeWithDepartment(Long id);
+
+    EmployeeResponseDto updateEmpDept(Long id, Long deptId);
 }

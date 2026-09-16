@@ -6,7 +6,9 @@ import com.tss.dept.service.department_service.entity.Department;
 import com.tss.dept.service.department_service.repository.DepartmentRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -33,8 +35,7 @@ public class DepartmentServiceImpl implements DepartmentService{
     public DepartmentResponseDto getDepartmentById(Long id) {
 
         Department department = departmentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Department not found")
-                );
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Department not found"));
 
         return new DepartmentResponseDto(
                 department.getId(),
