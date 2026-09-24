@@ -30,11 +30,11 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<EmployeeResponseDto> getById(@PathVariable Long id) {
-//
-//        return ResponseEntity.ok(employeeService.getEmployeeById(id));
-//    }
+    @GetMapping("oe/{id}")
+    public ResponseEntity<EmployeeResponseDto> getById(@PathVariable Long id) {
+
+        return ResponseEntity.ok(employeeService.getEmployeeById(id));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getEmployeeWithDept(@PathVariable Long id)

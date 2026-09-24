@@ -1,6 +1,7 @@
 package com.tss.dept.service.department_service.controller;
 
 
+import com.tss.dept.service.department_service.config.DeptConfig;
 import com.tss.dept.service.department_service.dto.DepartmentRequestDto;
 import com.tss.dept.service.department_service.dto.DepartmentResponseDto;
 import com.tss.dept.service.department_service.service.DepartmentService;
@@ -16,6 +17,7 @@ import java.util.List;
 public class DepartMentController {
 
     private final DepartmentService departmentService;
+    private final DeptConfig deptConfig;
 
     @GetMapping("/all")
     public ResponseEntity<List<DepartmentResponseDto>> getall()
@@ -38,5 +40,11 @@ public class DepartMentController {
     public ResponseEntity<DepartmentResponseDto> createDepartment(@RequestBody DepartmentRequestDto request)
     {
        return ResponseEntity.ok(departmentService.createDepartment(request));
+    }
+
+    @GetMapping("/message")
+    public String readMessage()
+    {
+        return deptConfig.getMessage();
     }
 }
