@@ -1,0 +1,16 @@
+package com.tss.security_demo.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import lombok.Data;
+
+@Data
+public class LoginRequestDto {
+
+    @NotBlank(message = "Email is required")
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Please enter valid email address")
+    private String email;
+
+    @NotBlank(message = "Password is required")
+    private String password;
+}
